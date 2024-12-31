@@ -11,14 +11,16 @@ builder.Services.AddMultiTenant<AppTenantInfo>()
     .WithHeaderStrategy()
     .WithConfigurationStore();
 
-builder.Services.AddDbContext<ApplicationDbContext>((serviceProvider, dbContextOptionsBuilder) =>
+builder.Services.AddDbContext<ApplicationDbContext>((option) =>
 {
-    var connectionString = Array.IndexOf(args, "--connection-string") >= 0
-        ? args[Array.IndexOf(args, "--connection-string") + 1]
-        : serviceProvider.GetRequiredService<IMultiTenantContextAccessor<AppTenantInfo>>()
-            .MultiTenantContext?.TenantInfo?.ConnectionString ?? string.Empty;
+    if (EF.IsDesignTime)
+    {
+        Console.WriteLine("Design time detected");
+        var tenants = builder.Configuration.GetSection("Finbuckle:MultiTenant:Stores:ConfigurationStore:Tenants").Get<List<AppTenantInfo>>() ?? [];
 
-    dbContextOptionsBuilder.UseNpgsql(connectionString);
+        Console.WriteLine(string.Join(Environment.NewLine, tenants.Select(x => x.ConnectionString)));
+        option.UseNpgsql(tenants.FirstOrDefault()?.ConnectionString);
+    }
 });
 
 

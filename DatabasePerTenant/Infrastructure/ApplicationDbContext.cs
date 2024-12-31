@@ -8,7 +8,7 @@ public class ApplicationDbContext : DbContext
 {
     private AppTenantInfo TenantInfo { get; set; }
 
-    public ApplicationDbContext(IMultiTenantContextAccessor<AppTenantInfo> multiTenantContextAccessor)
+    public ApplicationDbContext(IMultiTenantContextAccessor<AppTenantInfo> multiTenantContextAccessor, DbContextOptions<ApplicationDbContext> options) : base(options)
     {
         // get the current tenant info at the time of construction
         TenantInfo = multiTenantContextAccessor.MultiTenantContext?.TenantInfo ?? new();
@@ -16,7 +16,14 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql(TenantInfo.ConnectionString);
+        if (!EF.IsDesignTime)
+        {
+            optionsBuilder.UseNpgsql(TenantInfo.ConnectionString);
+        }
+        else
+        {
+            base.OnConfiguring(optionsBuilder);
+        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
