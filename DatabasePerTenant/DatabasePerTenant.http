@@ -1,0 +1,6 @@
+@DatabasePerTenant_HostAddress = http://localhost:5022
+
+GET {{DatabasePerTenant_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
