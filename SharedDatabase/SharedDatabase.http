@@ -1,0 +1,41 @@
+@SharedDatabase_HostAddress = http://localhost:5030
+@GoalTemplate_Route = api/GoalTemplates
+
+Post {{SharedDatabase_HostAddress}}/{{GoalTemplate_Route}}/
+X-Tenant-Id: sto-tomas
+Content-Type: application/json
+
+{
+  "name": "Do Sto Tomas Exercise"
+}
+
+###
+
+Post {{SharedDatabase_HostAddress}}/{{GoalTemplate_Route}}/
+X-Tenant-Id: taggle
+Content-Type: application/json
+
+{
+  "name": "Do Taggle Exercise"
+}
+
+###
+
+Post {{SharedDatabase_HostAddress}}/{{GoalTemplate_Route}}/
+Content-Type: application/json
+
+{
+  "name": "Do Default Exercise"
+}
+
+###
+
+Get {{SharedDatabase_HostAddress}}/{{GoalTemplate_Route}}/
+X-Tenant-Id: sto-tomas
+
+###
+
+Get {{SharedDatabase_HostAddress}}/{{GoalTemplate_Route}}/ignore-tenant
+X-Tenant-Id: sto-tomas
+
+###
