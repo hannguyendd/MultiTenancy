@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SharedDatabase.Infrastructure;
@@ -11,9 +12,11 @@ using SharedDatabase.Infrastructure;
 namespace SharedDatabase.Migrations
 {
     [DbContext(typeof(SharedDatabaseContext))]
-    partial class SharedDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20241231090736_AddIdentityUser")]
+    partial class AddIdentityUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

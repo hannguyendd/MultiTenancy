@@ -1,4 +1,5 @@
 using Finbuckle.MultiTenant;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using SharedDatabase.Infrastructure;
@@ -15,6 +16,12 @@ builder.Services.AddDbContext<SharedDatabaseContext>(option =>
     var connectionString = builder.Configuration.GetSection("Finbuckle:MultiTenant:Stores:ConfigurationStore:Defaults:ConnectionString").Value;
     option.UseNpgsql(connectionString);
 });
+builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
+    {
+        options.User.RequireUniqueEmail = false;
+    })
+    .AddEntityFrameworkStores<SharedDatabaseContext>()
+    .AddDefaultTokenProviders();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
